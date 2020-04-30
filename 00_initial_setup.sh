@@ -108,28 +108,23 @@ curl -sSL https://repos.insights.digitalocean.com/install.sh | bash
 ###    CRON JOBS     ###
 ########################
 
-# Create a cron job to run daily taks
+# Create a cron job to run maintenance tasks
 if [ ! -f $CRON_FILE ]; then
     echo "cron file for root doesn't exist, creating.."
     touch $CRON_FILE
     /usr/bin/crontab $CRON_FILE
 fi
-## Fetch the current daily job scripts
+## Fetch the current server scripts
 cd /root
-wget 
-if [ ! -f /root/daily_jobs.sh ]; then
-    echo "Daily jobs script doesn't exist, creating.."
-    touch /root/daily_jobs.sh
-    chmod +x /root/daily_jobs.sh
-fi
-for i in "${DAILY_JOBS[@]}"
-do
-   echo "$i" >> /root/daily_jobs.sh
-done
-# If daily jobs script doesn't already exist in cron jobs then add ot
-grep -qi "daily_jobs" $CRON_FILE
+wget -O https://github.com/grumpyguvner/server-setup/blob/master/cron/update_scripts.sh
+chmod +x /root/update_scripts.sh
+
+# If update scripts script doesn't already exist in cron jobs then add ot
+grep -qi "update_scripts" $CRON_FILE
 if [ $? != 0 ]; then
-    echo "Updating cron job for daily jobs"
-    echo "0 1 * * * /root/update_daily_jobs.sh" >> $CRON_FILE
-    echo "0 15 * * * /root/daily_jobs.sh" >> $CRON_FILE
+    echo "Updating cron job for updating scrpts"
+    echo "0 2 * * * /root/update_scripts.sh" >> $CRON_FILE
 fi
+
+# Run the current update script
+./update_scripts.sh
