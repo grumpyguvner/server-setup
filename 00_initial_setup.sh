@@ -122,12 +122,9 @@ curl -sSL -o update_scripts.sh https://raw.githubusercontent.com/grumpyguvner/se
 chmod +x /root/update_scripts.sh
 
 # If update scripts script doesn't already exist in cron jobs then add ot
-grep -qi "update_scripts" $CRON_FILE
-if [ $? != 0 ]; then
-    echo "Creating cron job for updating scrpts"
-    echo "0 2 * * * /root/update_scripts.sh" >> $CRON_FILE
-    crontab -u root $CRON_FILE
-fi
+echo "Creating cron job for updating scrpts"
+echo "0 2 * * * /root/update_scripts.sh" >> $CRON_FILE
+crontab -u root $CRON_FILE
 
 # Run the current update script
-./update_scripts.sh
+/root/update_scripts.sh
