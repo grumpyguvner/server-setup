@@ -2,6 +2,9 @@
 ### DAILY JOBS TO RUN ON ALL SERVERS ###
 ########################################
 
+# Filename used for creating cron jobs
+CRON_FILE="/var/spool/cron/root"
+
 ## Fetch the current update server scripts
 cd /root
 

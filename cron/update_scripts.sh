@@ -2,6 +2,9 @@
 ### UPDATE SCRIPTS TO RUN ON ALL SERVERS ###
 ############################################
 
+# Filename used for creating cron jobs
+CRON_FILE="/var/spool/cron/root"
+
 ## Fetch the current server scripts
 cd /root
 
