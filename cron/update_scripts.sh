@@ -15,6 +15,7 @@ chmod +x /root/daily_jobs.sh
 # If daily jobs script doesn't already exist in cron jobs then add it
 grep -qi "daily_jobs" $CRON_FILE
 if [ $? != 0 ]; then
-    echo "Updating cron job for daily jobs"
+    echo "Creating cron job for daily jobs"
     echo "0 15 * * * /root/daily_jobs.sh" >> $CRON_FILE
+    crontab $CRON_FILE
 fi

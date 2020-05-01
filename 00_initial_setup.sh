@@ -114,7 +114,7 @@ curl -sSL https://repos.insights.digitalocean.com/install.sh 2>&1 | bash
 if [ ! -f $CRON_FILE ]; then
     echo "cron file for root doesn't exist, creating.."
     touch $CRON_FILE
-    /usr/bin/crontab $CRON_FILE
+    crontab $CRON_FILE
 fi
 ## Fetch the current server scripts
 cd /root
@@ -124,8 +124,9 @@ chmod +x /root/update_scripts.sh
 # If update scripts script doesn't already exist in cron jobs then add ot
 grep -qi "update_scripts" $CRON_FILE
 if [ $? != 0 ]; then
-    echo "Updating cron job for updating scrpts"
+    echo "Creating cron job for updating scrpts"
     echo "0 2 * * * /root/update_scripts.sh" >> $CRON_FILE
+    crontab $CRON_FILE
 fi
 
 # Run the current update script
