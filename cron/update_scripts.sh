@@ -6,7 +6,7 @@
 cd /root
 
 # Daily jobs script
-curl -sSL -o daily_jobs.sh https://github.com/grumpyguvner/server-setup/raw/master/cron/daily_jobs.sh
+curl -sSL -o daily_jobs.sh https://raw.githubusercontent.com/grumpyguvner/server-setup/master/cron/daily_jobs.sh
 chmod +x /root/daily_jobs.sh
 
 # If daily jobs script doesn't already exist in cron jobs then add it

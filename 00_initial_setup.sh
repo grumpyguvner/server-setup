@@ -118,7 +118,7 @@ if [ ! -f $CRON_FILE ]; then
 fi
 ## Fetch the current server scripts
 cd /root
-curl -sSL -o update_scripts.sh https://github.com/grumpyguvner/server-setup/raw/cron/update_scripts.sh
+curl -sSL -o update_scripts.sh https://raw.githubusercontent.com/grumpyguvner/server-setup/master/cron/update_scripts.sh
 chmod +x /root/update_scripts.sh
 
 # If update scripts script doesn't already exist in cron jobs then add ot

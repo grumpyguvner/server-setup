@@ -6,7 +6,7 @@
 cd /root
 
 # Daily jobs script
-curl -sSL -o update_scripts.sh https://github.com/grumpyguvner/server-setup/raw/master/cron/update_scripts.sh
+curl -sSL -o update_scripts.sh https://raw.githubusercontent.com/grumpyguvner/server-setup/master/cron/update_scripts.sh
 chmod +x /root/update_scripts.sh
 
 # If update scripts doesn't already exist in cron jobs then add it
