@@ -15,6 +15,12 @@ if id "$1" >/dev/null 2>&1; then
     exit 1
 fi
 
+# Update all packages
+apt-get -y update && DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+
+# Remove unused packages
+apt-get -y autoremove
+
 ########################
 ### SCRIPT VARIABLES ###
 ########################
@@ -24,10 +30,6 @@ USERNAME=$1
 
 # Filename used for creating cron jobs
 CRON_FILE="/var/spool/cron/root"
-
-# Install required packackages
-apt get -q -y wget
-apt clean
 
 # Whether to copy over the root user's `authorized_keys` file to the new sudo
 # user.
@@ -99,10 +101,10 @@ ufw --force enable
 #############################
 
 # Uninstall the legacy metrics agent
-apt purge -y do-agent
+apt-get purge -y do-agent
 
 # Install the current metrics agent
-curl -sSL https://repos.insights.digitalocean.com/install.sh | bash
+curl -sSL https://repos.insights.digitalocean.com/install.sh 2>&1 | bash
 
 ########################
 ###    CRON JOBS     ###
@@ -116,7 +118,7 @@ if [ ! -f $CRON_FILE ]; then
 fi
 ## Fetch the current server scripts
 cd /root
-wget -O https://github.com/grumpyguvner/server-setup/blob/master/cron/update_scripts.sh
+curl -sSL -o update_scripts.sh https://github.com/grumpyguvner/server-setup/raw/cron/update_scripts.sh
 chmod +x /root/update_scripts.sh
 
 # If update scripts script doesn't already exist in cron jobs then add ot

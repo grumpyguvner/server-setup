@@ -6,7 +6,7 @@
 cd /root
 
 # Daily jobs script
-wget -O https://github.com/grumpyguvner/server-setup/blob/master/cron/update_scripts.sh
+curl -sSL -o update_scripts.sh https://github.com/grumpyguvner/server-setup/raw/master/cron/update_scripts.sh
 chmod +x /root/update_scripts.sh
 
 # If update scripts doesn't already exist in cron jobs then add it
@@ -17,10 +17,10 @@ if [ $? != 0 ]; then
 fi
 
 # Update all packages
-apt -y update && DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+apt-get -y update && DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
 
 # Remove unused packages
-apt -y autoremove
+apt-get -y autoremove
 
 # Daily reboot
 shutdown -r now
