@@ -17,7 +17,7 @@ grep -qi "update_scripts" $CRON_FILE
 if [ $? != 0 ]; then
     echo "Creating cron job to fetch current scripts"
     echo "0 2 * * * /root/update_scripts.sh" >> $CRON_FILE
-    crontab $CRON_FILE
+    crontab -u root $CRON_FILE
 fi
 
 # Update all packages

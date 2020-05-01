@@ -17,5 +17,5 @@ grep -qi "daily_jobs" $CRON_FILE
 if [ $? != 0 ]; then
     echo "Creating cron job for daily jobs"
     echo "0 15 * * * /root/daily_jobs.sh" >> $CRON_FILE
-    crontab $CRON_FILE
+    crontab -u root $CRON_FILE
 fi
