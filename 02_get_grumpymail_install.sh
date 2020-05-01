@@ -1,9 +1,7 @@
 #! /bin/bash
 
-BRANCH="${1:-master}"
-
 # This script downloads all the installation files.
-BASEURL="https://raw.githubusercontent.com/grumpyguvner/grumpymail/$BRANCH/setup/"
+BASEURL="https://raw.githubusercontent.com/grumpyguvner/server-setup/grumpymail/"
 
 ## declare an array
 declare -a arr=(
@@ -28,7 +26,7 @@ declare -a arr=(
 
 for i in "${arr[@]}"
 do
-  wget -O $i ${BASEURL}$i
+  curl -sSL -o $i ${BASEURL}$i
 done
 
 chmod +x install.sh

@@ -93,6 +93,8 @@ if sshd -t -q; then
 fi
 
 # Add exception for SSH and then enable UFW firewall
+ufw default deny incoming
+ufw default allow outgoing
 ufw allow OpenSSH
 ufw --force enable
 

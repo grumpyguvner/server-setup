@@ -23,12 +23,12 @@ chown -R deploy:deploy /home/deploy
 export DEBIAN_FRONTEND=noninteractive
 
 # nodejs
-wget -qO- https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key 2>&1 | apt-key add -
 echo "deb https://deb.nodesource.com/$NODEREPO $CODENAME main" > /etc/apt/sources.list.d/nodesource.list
 echo "deb-src https://deb.nodesource.com/$NODEREPO $CODENAME main" >> /etc/apt/sources.list.d/nodesource.list
 
 # rspamd
-wget -O- https://rspamd.com/apt-stable/gpg.key | apt-key add -
+curl -sSL https://rspamd.com/apt-stable/gpg.key 2>&1 | apt-key add -
 echo "deb http://rspamd.com/apt-stable/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
 echo "deb-src http://rspamd.com/apt-stable/ $CODENAME main" >> /etc/apt/sources.list.d/rspamd.list
 apt-get update

@@ -6,7 +6,7 @@ echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
 #### SSL CERTS ####
 
-curl https://get.acme.sh | sh
+curl https://get.acme.sh 2>&1 | sh
 
 echo 'cert="/etc/grumpymail/certs/fullchain.pem"
 key="/etc/grumpymail/certs/privkey.pem"' > /etc/grumpymail/tls.toml
