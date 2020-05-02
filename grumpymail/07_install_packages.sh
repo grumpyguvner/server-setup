@@ -26,7 +26,7 @@ apt-add-repository -y ppa:chris-lea/redis-server
 
 # install packages
 apt-get update
-apt-get -q -y install pwgen git ufw build-essential libssl-dev dnsutils python software-properties-common nodejs redis-server clamav clamav-daemon
+apt-get -q -y install pwgen git ufw build-essential libssl-dev dnsutils python software-properties-common nodejs npm redis-server clamav clamav-daemon
 
 # rspamd
 apt-get -q -y --no-install-recommends install rspamd
