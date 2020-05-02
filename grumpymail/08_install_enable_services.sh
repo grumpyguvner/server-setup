@@ -1,6 +1,6 @@
 #! /bin/bash
 
-OURNAME=07_install_enable_services.sh
+OURNAME=08_install_enable_services.sh
 
 # No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
 # check if $AUT_SAFETY is unset (as opposed to empty "" string)
@@ -21,7 +21,7 @@ DKIM_SECRET=`pwgen 12 -1`
 ZONEMTA_SECRET=`pwgen 12 -1`
 DKIM_SELECTOR=`$NODE_PATH -e 'console.log(Date().toString().substr(4, 3).toLowerCase() + new Date().getFullYear())'`
 
-$SYSTEMCTL_PATH enable redis-server.service
+systemctl enable redis-server.service
 
 echo -e "\n-- These are the installed and required programs:"
 node -v

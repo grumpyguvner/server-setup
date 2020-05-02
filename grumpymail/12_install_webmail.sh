@@ -1,6 +1,6 @@
 #! /bin/bash
 
-OURNAME=11_install_grumpymail_webmail.sh
+OURNAME=12_install_grumpymail_webmail.sh
 
 # No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
 # check if $AUT_SAFETY is unset (as opposed to empty "" string)
@@ -18,8 +18,8 @@ echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 # clear previous install
 if [ -f "/etc/systemd/system/webmail.service" ]
 then
-    $SYSTEMCTL_PATH stop webmail || true
-    $SYSTEMCTL_PATH disable webmail || true
+    systemctl stop webmail || true
+    systemctl disable webmail || true
     rm -rf /etc/systemd/system/webmail.service
 fi
 rm -rf /var/opt/webmail.git
@@ -34,7 +34,7 @@ hook_script_bower webmail
 chmod +x /var/opt/webmail.git/hooks/update
 
 # allow deploy user to restart zone-mta service
-echo "deploy ALL = (root) NOPASSWD: $SYSTEMCTL_PATH restart webmail" >> /etc/sudoers.d/webmail
+echo "deploy ALL = (root) NOPASSWD: systemctl restart webmail" >> /etc/sudoers.d/webmail
 
 # checkout files from git to working directory
 mkdir -p /opt/webmail
@@ -73,6 +73,6 @@ SyslogIdentifier=grumpymail-www
 [Install]
 WantedBy=multi-user.target' > /etc/systemd/system/webmail.service
 
-$SYSTEMCTL_PATH enable webmail.service
+systemctl enable webmail.service
 
 echo -e "\n-- Finished ${ORANGE}${OURNAME}${NC} subscript --"

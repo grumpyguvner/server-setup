@@ -1,6 +1,6 @@
 #! /bin/bash
 
-OURNAME=03_install_ssl_certs.sh
+OURNAME=04_install_ssl_certs.sh
 
 # No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
 # check if $AUT_SAFETY is unset (as opposed to empty "" string)
@@ -81,7 +81,6 @@ echo "server {
 }" > "/etc/nginx/sites-available/$HOSTNAME"
 
 #See issue https://github.com/nodemailer/grumpymail/issues/83
-$SYSTEMCTL_PATH start nginx
-$SYSTEMCTL_PATH reload nginx
+systemctl restart nginx
 
 echo -e "\n-- Finished ${ORANGE}${OURNAME}${NC} subscript --"

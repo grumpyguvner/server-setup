@@ -1,6 +1,6 @@
 #! /bin/bash
 
-OURNAME=04_install_check_running_services.sh
+OURNAME=05_install_check_running_services.sh
 
 # No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
 # check if $AUT_SAFETY is unset (as opposed to empty "" string)
@@ -12,6 +12,13 @@ if [ -z ${AUT_SAFETY+x} ]
 fi
 
 echo -e "\n\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
+
+# Stop services that we know about
+systemctl stop haraka
+systemctl stop zone-mta
+systemctl stop redis-server
+systemctl stop grumpymail
+systemctl stop webmail
 
 echo -e "Checking programs listening on port 25,587,993,995,80,443"
 PORT25=`lsof -Pi :25 -sTCP:LISTEN -t`

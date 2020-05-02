@@ -1,6 +1,6 @@
 #! /bin/bash
 
-OURNAME=09_install_haraka.sh
+OURNAME=10_install_haraka.sh
 
 # No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
 # check if $AUT_SAFETY is unset (as opposed to empty "" string)
@@ -20,8 +20,8 @@ echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 # clear previous install
 if [ -f "/etc/systemd/system/haraka.service" ]
 then
-    $SYSTEMCTL_PATH stop haraka || true
-    $SYSTEMCTL_PATH disable haraka || true
+    systemctl stop haraka || true
+    systemctl disable haraka || true
     rm -rf /etc/systemd/system/haraka.service
 fi
 rm -rf /var/opt/haraka-plugin-grumpymail.git
@@ -35,11 +35,11 @@ git --git-dir=/var/opt/haraka-plugin-grumpymail.git --work-tree=/opt/haraka/plug
 cd /opt/haraka/plugins/grumpymail
 rm -rf package-lock.json
 npm install --production --progress=false
-sudo $SYSTEMCTL_PATH restart haraka || echo \"Failed restarting service\"" > "/var/opt/haraka-plugin-grumpymail.git/hooks/update"
+sudo systemctl restart haraka || echo \"Failed restarting service\"" > "/var/opt/haraka-plugin-grumpymail.git/hooks/update"
 chmod +x "/var/opt/haraka-plugin-grumpymail.git/hooks/update"
 
 # allow deploy user to restart grumpymail service
-echo "deploy ALL = (root) NOPASSWD: $SYSTEMCTL_PATH restart haraka" >> /etc/sudoers.d/grumpymail
+echo "deploy ALL = (root) NOPASSWD: systemctl restart haraka" >> /etc/sudoers.d/grumpymail
 
 cd
 npm install --unsafe-perm -g Haraka@$HARAKA_VERSION
@@ -140,6 +140,6 @@ chown -R deploy:deploy /var/opt/haraka-plugin-grumpymail.git
 mkdir -p /opt/haraka/queue
 chown -R grumpymail:grumpymail /opt/haraka/queue
 
-$SYSTEMCTL_PATH enable haraka.service
+systemctl enable haraka.service
 
 echo -e "\n-- Finished ${ORANGE}${OURNAME}${NC} subscript --"

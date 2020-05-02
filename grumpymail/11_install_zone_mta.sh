@@ -1,6 +1,6 @@
 #! /bin/bash
 
-OURNAME=10_install_zone_mta.sh
+OURNAME=11_install_zone_mta.sh
 
 # No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
 # check if $AUT_SAFETY is unset (as opposed to empty "" string)
@@ -19,8 +19,8 @@ echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 # clear previous install
 if [ -f "/etc/systemd/system/zone-mta.service" ]
 then
-    $SYSTEMCTL_PATH stop zone-mta || true
-    $SYSTEMCTL_PATH disable zone-mta || true
+    systemctl stop zone-mta || true
+    systemctl disable zone-mta || true
     rm -rf /etc/systemd/system/zone-mta.service
 fi
 rm -rf /var/opt/zone-mta.git
@@ -40,11 +40,11 @@ git --git-dir=/var/opt/zonemta-grumpymail.git --work-tree=/opt/zone-mta/plugins/
 cd /opt/zone-mta/plugins/grumpymail
 rm -rf package-lock.json
 npm install --production --progress=false
-sudo $SYSTEMCTL_PATH restart zone-mta || echo \"Failed restarting service\"" > "/var/opt/zonemta-grumpymail.git/hooks/update"
+sudo systemctl restart zone-mta || echo \"Failed restarting service\"" > "/var/opt/zonemta-grumpymail.git/hooks/update"
 chmod +x "/var/opt/zonemta-grumpymail.git/hooks/update"
 
 # allow deploy user to restart zone-mta service
-echo "deploy ALL = (root) NOPASSWD: $SYSTEMCTL_PATH restart zone-mta" >> /etc/sudoers.d/zone-mta
+echo "deploy ALL = (root) NOPASSWD: systemctl restart zone-mta" >> /etc/sudoers.d/zone-mta
 
 # checkout files from git to working directory
 mkdir -p /opt/zone-mta
@@ -149,6 +149,6 @@ SyslogIdentifier=zone-mta
 [Install]
 WantedBy=multi-user.target' > /etc/systemd/system/zone-mta.service
 
-$SYSTEMCTL_PATH enable zone-mta.service
+systemctl enable zone-mta.service
 
 echo -e "\n-- Finished ${ORANGE}${OURNAME}${NC} subscript --"

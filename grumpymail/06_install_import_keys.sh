@@ -1,6 +1,6 @@
 #! /bin/bash
 
-OURNAME=05_install_import_keys.sh
+OURNAME=06_install_import_keys.sh
 
 # No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
 # check if $AUT_SAFETY is unset (as opposed to empty "" string)

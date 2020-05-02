@@ -237,7 +237,7 @@ git --git-dir=/var/opt/$1.git --work-tree=\"/opt/$1\" checkout "\$3" -f
 cd \"/opt/$1\"
 rm -rf package-lock.json
 npm install --production --progress=false
-sudo $SYSTEMCTL_PATH restart $1 || echo \"Failed restarting service\"" > "/var/opt/$1.git/hooks/update"
+sudo systemctl restart $1 || echo \"Failed restarting service\"" > "/var/opt/$1.git/hooks/update"
     chmod +x "/var/opt/$1.git/hooks/update"
 }
 export -f hook_script
@@ -249,7 +249,7 @@ cd \"/opt/$1\"
 rm -rf package-lock.json
 npm install --progress=false
 npm run bowerdeps
-sudo $SYSTEMCTL_PATH restart $1 || echo \"Failed restarting service\"" > "/var/opt/$1.git/hooks/update"
+sudo systemctl restart $1 || echo \"Failed restarting service\"" > "/var/opt/$1.git/hooks/update"
     chmod +x "/var/opt/$1.git/hooks/update"
 }
 export -f hook_script_bower

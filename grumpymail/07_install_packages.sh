@@ -1,6 +1,6 @@
 #! /bin/bash
 
-OURNAME=06_install_packages.sh
+OURNAME=07_install_packages.sh
 
 # No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
 # check if $AUT_SAFETY is unset (as opposed to empty "" string)
@@ -13,9 +13,9 @@ fi
 
 echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
-# install nginx
+# install packages
 apt-get update
-apt-get -q -y install pwgen git ufw build-essential libssl-dev dnsutils python software-properties-common nginx nodejs redis-server clamav clamav-daemon
+apt-get -q -y install pwgen git ufw build-essential libssl-dev dnsutils python software-properties-common nodejs redis-server clamav clamav-daemon
 
 # rspamd
 apt-get -q -y --no-install-recommends install rspamd

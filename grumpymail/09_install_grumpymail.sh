@@ -1,6 +1,6 @@
 #! /bin/bash
 
-OURNAME=08_install_grumpymail.sh
+OURNAME=09_install_grumpymail.sh
 
 # No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
 # check if $AUT_SAFETY is unset (as opposed to empty "" string)
@@ -18,8 +18,8 @@ echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 # clear previous install
 if [ -f "/etc/systemd/system/grumpymail.service" ]
 then
-    $SYSTEMCTL_PATH stop grumpymail || true
-    $SYSTEMCTL_PATH disable grumpymail || true
+    systemctl stop grumpymail || true
+    systemctl disable grumpymail || true
     rm -rf /etc/systemd/system/grumpymail.service
 fi
 rm -rf /var/opt/grumpymail.git
@@ -33,7 +33,7 @@ git clone --bare git://github.com/grumpyguvner/grumpymail.git
 hook_script grumpymail
 
 # allow deploy user to restart grumpymail service
-echo "deploy ALL = (root) NOPASSWD: $SYSTEMCTL_PATH restart grumpymail" >> /etc/sudoers.d/grumpymail
+echo "deploy ALL = (root) NOPASSWD: systemctl restart grumpymail" >> /etc/sudoers.d/grumpymail
 
 # checkout files from git to working directory
 mkdir -p /opt/grumpymail
@@ -95,6 +95,6 @@ SyslogIdentifier=grumpymail-server
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/grumpymail.service
 
-$SYSTEMCTL_PATH enable grumpymail.service
+systemctl enable grumpymail.service
 
 echo -e "\n-- Finished ${ORANGE}${OURNAME}${NC} subscript --"

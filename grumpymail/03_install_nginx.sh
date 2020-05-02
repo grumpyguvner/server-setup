@@ -1,6 +1,6 @@
 #! /bin/bash
 
-OURNAME=12_install_nginx.sh
+OURNAME=03_install_nginx.sh
 
 # No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
 # check if $AUT_SAFETY is unset (as opposed to empty "" string)
@@ -14,6 +14,10 @@ fi
 echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
 #### NGINX ####
+
+# install nginx
+apt-get update
+apt-get -q -y install nginx
 
 if [ ! -d "/etc/grumpymail/certs" ]; then
     # Create initial certs. These will be overwritten later by Let's Encrypt certs
@@ -70,6 +74,6 @@ echo "server {
 }" > "/etc/nginx/sites-available/$HOSTNAME"
 rm -rf "/etc/nginx/sites-enabled/$HOSTNAME"
 ln -s "/etc/nginx/sites-available/$HOSTNAME" "/etc/nginx/sites-enabled/$HOSTNAME"
-$SYSTEMCTL_PATH reload nginx
+systemctl restart nginx
 
 echo -e "\n-- Finished ${ORANGE}${OURNAME}${NC} subscript --"

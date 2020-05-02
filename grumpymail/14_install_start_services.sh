@@ -21,20 +21,20 @@ systemctl restart rsyslog
 
 # update reload script for future updates
 echo "#!/bin/bash
-$SYSTEMCTL_PATH reload nginx
-$SYSTEMCTL_PATH reload grumpymail
-$SYSTEMCTL_PATH restart zone-mta
-$SYSTEMCTL_PATH restart haraka
-$SYSTEMCTL_PATH restart webmail" > /usr/local/bin/reload-services.sh
+systemctl reload nginx
+systemctl reload grumpymail
+systemctl restart zone-mta
+systemctl restart haraka
+systemctl restart webmail" > /usr/local/bin/reload-services.sh
 chmod +x /usr/local/bin/reload-services.sh
 
 ### start services ####
 
-$SYSTEMCTL_PATH start mongod
-$SYSTEMCTL_PATH start grumpymail
-$SYSTEMCTL_PATH start haraka
-$SYSTEMCTL_PATH start zone-mta
-$SYSTEMCTL_PATH start webmail
-$SYSTEMCTL_PATH reload nginx
+systemctl start mongod
+systemctl start grumpymail
+systemctl start haraka
+systemctl start zone-mta
+systemctl start webmail
+systemctl reload nginx
 
 echo -e "\n-- Finished ${ORANGE}${OURNAME}${NC} subscript --"
