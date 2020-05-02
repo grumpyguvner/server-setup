@@ -76,7 +76,7 @@ chown -R deploy:deploy /opt/grumpymail
 
 echo "d /opt/grumpymail 0755 deploy deploy
 d /etc/grumpymail 0755 grumpymail grumpymail" > /etc/tmpfiles.d/zone-mta.conf
-log_script "grumpymail-server"
+log_script "grumpymail"
 
 echo "[Unit]
 Description=GrumpyMail Mail Server
@@ -90,7 +90,7 @@ ExecStart=$NODE_PATH server.js --config=\"/etc/grumpymail/grumpymail.toml\"
 ExecReload=/bin/kill -HUP \$MAINPID
 Type=simple
 Restart=always
-SyslogIdentifier=grumpymail-server
+SyslogIdentifier=grumpymail
 
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/grumpymail.service

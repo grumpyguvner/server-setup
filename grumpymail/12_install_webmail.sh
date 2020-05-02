@@ -55,7 +55,7 @@ HOME=/home/deploy sudo -u deploy npm run bowerdeps
 
 
 echo "d /opt/webmail 0755 deploy deploy" > /etc/tmpfiles.d/zone-mta.conf
-log_script "grumpymail-www"
+log_script "webmail"
 
 echo '[Unit]
 Description=GrumpyMail Webmail
@@ -68,7 +68,7 @@ ExecStart=/usr/bin/node server.js --config="/etc/grumpymail/webmail.toml"
 ExecReload=/bin/kill -HUP $MAINPID
 Type=simple
 Restart=always
-SyslogIdentifier=grumpymail-www
+SyslogIdentifier=webmail
 
 [Install]
 WantedBy=multi-user.target' > /etc/systemd/system/webmail.service

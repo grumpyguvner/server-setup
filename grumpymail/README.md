@@ -55,7 +55,7 @@ Configuration files are installed to the following locations:
 
 ## Log files
 
-All `stdout` and `stderr` is written to service specific log files. For example GrumpyMail server logs can be found from `/var/log/wildduc-server/grumpymail-server.log`.
+All `stdout` and `stderr` is written to service specific log files. For example GrumpyMail server logs can be found from `/var/log/grumpymail/grumpymail.log`.
 
 ## Code changes
 
