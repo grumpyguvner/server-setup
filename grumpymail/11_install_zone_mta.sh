@@ -1,6 +1,15 @@
 #! /bin/bash
 
-OURNAME=09_install_zone_mta.sh
+OURNAME=10_install_zone_mta.sh
+
+# No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
+# check if $AUT_SAFETY is unset (as opposed to empty "" string)
+if [ -z ${AUT_SAFETY+x} ]
+  then
+    echo "this script ${RED}called directly${NC}, and not from the main ./install.sh script"
+    echo "initializing common variables ('install_variables.sh')"
+    source "$INSTALLDIR/install_variables.sh"
+fi
 
 echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
@@ -52,6 +61,9 @@ rm -rf /etc/zone-mta/plugins/dkim.toml
 echo '# @include "/etc/grumpymail/dbs.toml"' > /etc/zone-mta/dbs-production.toml
 echo 'user="grumpymail"
 group="grumpymail"' | cat - /etc/zone-mta/zonemta.toml > temp && mv temp /etc/zone-mta/zonemta.toml
+
+sed -i -e "s/key=/#key=/g;s/cert=/#cert=/g" /etc/zone-mta/interfaces/feeder.toml
+echo '# @include "../../grumpymail/tls.toml"' >> /etc/zone-mta/interfaces/feeder.toml
 
 echo "[[default]]
 address=\"0.0.0.0\"

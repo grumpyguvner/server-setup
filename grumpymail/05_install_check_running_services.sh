@@ -1,6 +1,6 @@
 #! /bin/bash
 
-OURNAME=03_install_check_running_services.sh
+OURNAME=04_install_check_running_services.sh
 
 # No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
 # check if $AUT_SAFETY is unset (as opposed to empty "" string)

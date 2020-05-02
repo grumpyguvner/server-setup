@@ -1,6 +1,15 @@
 #! /bin/bash
 
-OURNAME=07_install_grumpymail.sh
+OURNAME=08_install_grumpymail.sh
+
+# No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
+# check if $AUT_SAFETY is unset (as opposed to empty "" string)
+if [ -z ${AUT_SAFETY+x} ]
+  then
+    echo "this script ${RED}called directly${NC}, and not from the main ./install.sh script"
+    echo "initializing common variables ('install_variables.sh')"
+    source "$INSTALLDIR/install_variables.sh"
+fi
 
 echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
@@ -15,7 +24,6 @@ then
 fi
 rm -rf /var/opt/grumpymail.git
 rm -rf /opt/grumpymail
-rm -rf /etc/grumpymail
 
 # fresh install
 cd /var/opt
@@ -35,6 +43,9 @@ git --git-dir=/var/opt/grumpymail.git --work-tree=/opt/grumpymail checkout
 #git --git-dir=/var/opt/grumpymail.git --work-tree=/opt/grumpymail checkout "$GRUMPYMAIL_COMMIT"
 cp -r /opt/grumpymail/config /etc/grumpymail
 mv /etc/grumpymail/default.toml /etc/grumpymail/grumpymail.toml
+
+echo 'cert="/etc/grumpymail/certs/fullchain.pem"
+key="/etc/grumpymail/certs/privkey.pem"' > /etc/grumpymail/tls.toml
 
 # enable example message
 #sed -i -e 's/"disabled": true/"disabled": false/g' /opt/grumpymail/emails/00-example.json

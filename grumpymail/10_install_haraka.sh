@@ -1,6 +1,15 @@
 #! /bin/bash
 
-OURNAME=08_install_haraka.sh
+OURNAME=09_install_haraka.sh
+
+# No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
+# check if $AUT_SAFETY is unset (as opposed to empty "" string)
+if [ -z ${AUT_SAFETY+x} ]
+  then
+    echo "this script ${RED}called directly${NC}, and not from the main ./install.sh script"
+    echo "initializing common variables ('install_variables.sh')"
+    source "$INSTALLDIR/install_variables.sh"
+fi
 
 echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 

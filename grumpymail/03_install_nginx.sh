@@ -1,38 +1,33 @@
 #! /bin/bash
 
-OURNAME=13_install_ssl_certs.sh
+OURNAME=12_install_nginx.sh
+
+# No $AUT_SAFETY variable present, so we have not sourced install_variables.sh yet
+# check if $AUT_SAFETY is unset (as opposed to empty "" string)
+if [ -z ${AUT_SAFETY+x} ]
+  then
+    echo "this script ${RED}called directly${NC}, and not from the main ./install.sh script"
+    echo "initializing common variables ('install_variables.sh')"
+    source "$INSTALLDIR/install_variables.sh"
+fi
 
 echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
-#### SSL CERTS ####
+#### NGINX ####
 
-curl https://get.acme.sh 2>&1 | sh
+if [ ! -d "/etc/grumpymail/certs" ]; then
+    # Create initial certs. These will be overwritten later by Let's Encrypt certs
+    mkdir -p /etc/grumpymail/certs
+    cd /etc/grumpymail/certs
+    openssl req -subj "/CN=$HOSTNAME/O=My Company Name LTD./C=UK" -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout privkey.pem -out fullchain.pem
 
-echo 'cert="/etc/grumpymail/certs/fullchain.pem"
-key="/etc/grumpymail/certs/privkey.pem"' > /etc/grumpymail/tls.toml
+    chown -R grumpymail:grumpymail /etc/grumpymail/certs
+    chmod 0700 /etc/grumpymail/certs/privkey.pem
+fi
 
-sed -i -e "s/key=/#key=/g;s/cert=/#cert=/g" /etc/zone-mta/interfaces/feeder.toml
-echo '# @include "../../grumpymail/tls.toml"' >> /etc/zone-mta/interfaces/feeder.toml
-
-# vanity script as first run should not restart anything
-echo '#!/bin/bash
-echo "OK"' > /usr/local/bin/reload-services.sh
-chmod +x /usr/local/bin/reload-services.sh
-
-#/root/.acme.sh/acme.sh --issue --nginx --staging --test \
-/root/.acme.sh/acme.sh --issue --nginx \
-    -d "$HOSTNAME" \
-    --key-file       /etc/grumpymail/certs/privkey.pem  \
-    --fullchain-file /etc/grumpymail/certs/fullchain.pem \
-    --reloadcmd     "/usr/local/bin/reload-services.sh" \
-    --force || echo "Warning: Failed to generate certificates, using self-signed certs"
-
-# Update site config, make sure ssl is enabled
+# Setup domain without SSL at first, otherwise acme.sh will fail
 echo "server {
     listen 80;
-    listen [::]:80;
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
 
     server_name $HOSTNAME;
 
@@ -73,9 +68,8 @@ echo "server {
         proxy_redirect off;
     }
 }" > "/etc/nginx/sites-available/$HOSTNAME"
-
-#See issue https://github.com/nodemailer/grumpymail/issues/83
-$SYSTEMCTL_PATH start nginx
+rm -rf "/etc/nginx/sites-enabled/$HOSTNAME"
+ln -s "/etc/nginx/sites-available/$HOSTNAME" "/etc/nginx/sites-enabled/$HOSTNAME"
 $SYSTEMCTL_PATH reload nginx
 
 echo -e "\n-- Finished ${ORANGE}${OURNAME}${NC} subscript --"
