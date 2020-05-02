@@ -15,6 +15,11 @@ echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
 export DEBIAN_FRONTEND=noninteractive
 
+# nodejs
+curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key 2>&1 | apt-key add -
+echo "deb https://deb.nodesource.com/$NODEREPO $CODENAME main" > /etc/apt/sources.list.d/nodesource.list
+echo "deb-src https://deb.nodesource.com/$NODEREPO $CODENAME main" >> /etc/apt/sources.list.d/nodesource.list
+
 # rspamd
 curl -sSL https://rspamd.com/apt-stable/gpg.key 2>&1 | apt-key add -
 echo "deb http://rspamd.com/apt-stable/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
