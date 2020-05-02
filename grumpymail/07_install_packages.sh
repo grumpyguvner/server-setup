@@ -13,6 +13,17 @@ fi
 
 echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
+export DEBIAN_FRONTEND=noninteractive
+
+# rspamd
+curl -sSL https://rspamd.com/apt-stable/gpg.key 2>&1 | apt-key add -
+echo "deb http://rspamd.com/apt-stable/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
+echo "deb-src http://rspamd.com/apt-stable/ $CODENAME main" >> /etc/apt/sources.list.d/rspamd.list
+apt-get update
+
+# redis
+apt-add-repository -y ppa:chris-lea/redis-server
+
 # install packages
 apt-get update
 apt-get -q -y install pwgen git ufw build-essential libssl-dev dnsutils python software-properties-common nodejs redis-server clamav clamav-daemon

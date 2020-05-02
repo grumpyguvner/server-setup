@@ -4,7 +4,6 @@ OURNAME=01_install_commits.sh
 
 echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
-NODEREPO="node_12.x"
 CODENAME=`lsb_release -c -s`
 
 #Once stable use the following hashes to lock in a specific version of the commits:
@@ -14,6 +13,5 @@ ZONEMTA_COMMIT="bac2d9b7f099013027c254ee75880ca19db52a14" # zone-mta-template
 WEBMAIL_COMMIT="461a3817d54a5f09323c7bd0133919e3cebed4a3"
 GRUMPYMAIL_ZONEMTA_COMMIT="52d3bf30148d445dd3a7670393c918f8acdeb1d9"
 GRUMPYMAIL_HARAKA_COMMIT="e1f4c6de47980a1c4844b20aa05355b348ff4b5c"
-HARAKA_VERSION="2.8.25"
 
 echo -e "\n-- Finished ${ORANGE}${OURNAME}${NC} subscript --"

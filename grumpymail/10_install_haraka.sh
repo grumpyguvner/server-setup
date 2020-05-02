@@ -42,10 +42,10 @@ chmod +x "/var/opt/haraka-plugin-grumpymail.git/hooks/update"
 echo "deploy ALL = (root) NOPASSWD: systemctl restart haraka" >> /etc/sudoers.d/grumpymail
 
 cd
-npm install --unsafe-perm -g Haraka@$HARAKA_VERSION
+npm install --unsafe-perm -g Haraka
 haraka -i /opt/haraka
 cd /opt/haraka
-npm install --unsafe-perm --save haraka-plugin-rspamd Haraka@$HARAKA_VERSION
+npm install --unsafe-perm --save haraka-plugin-rspamd Haraka
 
 # Haraka GrumpyMail plugin. Install as separate repo as it can be edited more easily later
 mkdir -p plugins/grumpymail

@@ -11,7 +11,7 @@ declare -a arr=(
 "03_install_nginx.sh"
 "04_install_ssl_certs.sh"
 "05_install_check_running_services.sh"
-"06_install_import_keys.sh"
+"06_install_create_users.sh"
 "07_install_packages.sh"
 "08_install_enable_services.sh"
 "09_install_grumpymail.sh"
