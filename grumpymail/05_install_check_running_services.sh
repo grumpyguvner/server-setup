@@ -25,8 +25,6 @@ PORT25=`lsof -Pi :25 -sTCP:LISTEN -t`
 PORT587=`lsof -Pi :587 -sTCP:LISTEN -t`
 PORT993=`lsof -Pi :993 -sTCP:LISTEN -t`
 PORT995=`lsof -Pi :995 -sTCP:LISTEN -t`
-PORT80=`lsof -Pi :80 -sTCP:LISTEN -t`
-PORT443=`lsof -Pi :443 -sTCP:LISTEN -t`
 
 
 # check if $PORT25 is empty "" string (as opposed to unset)
@@ -108,46 +106,6 @@ if  ! [ -z $PORT995 ] ; then
     exit 1
   else
     echo -e 'OK: port 995 (POP3 SSL/TLS) is free'
-fi
-
-if  ! [ -z $PORT80 ] ; then
-    echo -e "${RED}Error:${NC} HTTP server already running on port 80"
-    echo -e "PID: ${YELLOW}$PORT80${NC}"
-    BINARY=`ps -p $PORT80 -o comm=`
-    echo -e "binary: ${YELLOW}$BINARY${NC}"
-    echo -e "full command with arguments: ${YELLOW}`ps -p $PORT80 -o command=`${NC}"
-    echo -e "possible packages (dpkg -S $BINARY | grep /${BINARY}$):"
-    echo -e "`dpkg -S $BINARY | grep /${BINARY}$`"
-    echo -e "If it is launched by systemd, finding the service with"
-    echo -e "Executing ${YELLOW}systemctl status $PORT80${NC}"
-    echo -e "`systemctl status $PORT80`"
-    echo -e "\nList all enabled services:"
-    echo -e "systemctl list-unit-files | grep enabled"
-    echo -e "stop a service: systemctl stop [service]"
-    echo -e "${RED}QUITTING... (please stop the service and launch again)${NC}"
-    exit 1
-  else
-    echo -e 'OK: port 80 (HTTP) is free'
-fi
-
-if  ! [ -z $PORT443 ] ; then
-    echo -e "${RED}Error:${NC} HTTPS server already running on port 443"
-    echo -e "PID: ${YELLOW}$PORT443${NC}"
-    BINARY=`ps -p $PORT443 -o comm=`
-    echo -e "binary: ${YELLOW}$BINARY${NC}"
-    echo -e "full command with arguments: ${YELLOW}`ps -p $PORT443 -o command=`${NC}"
-    echo -e "possible packages (dpkg -S $BINARY | grep /${BINARY}$):"
-    echo -e "`dpkg -S $BINARY | grep /${BINARY}$`"
-    echo -e "If it is launched by systemd, finding the service with"
-    echo -e "Executing ${YELLOW}systemctl status $PORT443${NC}"
-    echo -e "`systemctl status $PORT443`"
-    echo -e "\nList all enabled services:"
-    echo -e "systemctl list-unit-files | grep enabled"
-    echo -e "stop a service: systemctl stop [service]"
-    echo -e "${RED}QUITTING... (please stop the service and launch again)${NC}"
-    exit 1
-  else
-    echo -e 'OK: port 443 (HTTPS) is free'
 fi
 
 echo -e "\n-- Finished ${ORANGE}${OURNAME}${NC} subscript --"
