@@ -25,6 +25,7 @@ declare -a arr=(
 )
 
 if [ -d "/root/grumpymail_install" ]; then
+  echo -e "Removing existing install folder"
   rm -rf /root/grumpymail_install
 fi
 
