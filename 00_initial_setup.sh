@@ -103,7 +103,9 @@ ufw --force enable
 #############################
 
 # Uninstall the legacy metrics agent
-apt-get purge -y do-agent
+if dpkg-query -l do-agent; then
+   apt-get purge -y do-agent
+fi
 
 # Install the current metrics agent
 curl -sSL https://repos.insights.digitalocean.com/install.sh 2>&1 | bash
