@@ -10,5 +10,6 @@ fi
 mkdir /root/wildduck_install && cd /root/wildduck_install
 
 wget -O - https://raw.githubusercontent.com/nodemailer/wildduck/master/setup/get_install.sh | bash
+wget -O https://raw.githubusercontent.com/grumpyguvner/server-setup/master/03_install_zmta-webadmin.sh
 
 chmod +x install.sh
