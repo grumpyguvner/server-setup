@@ -4,10 +4,12 @@
 OURNAME=03_install_zmta-webadmin.sh
 INSTALLDIR=`pwd`
 PUBLIC_IP=`curl -s https://api.ipify.org`
+WEBADMIN_COMMIT="a69aec12f529d1142f6f4c0a6c2b9f993f9b4a50"
+
 echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
 echo -e "\n-- Fetching Global Functions & Variables Script --"
-wget -O https://raw.githubusercontent.com/nodemailer/wildduck/master/setup/00_install_global_functions_variables.sh
+wget -O 00_install_global_functions_variables.sh https://raw.githubusercontent.com/nodemailer/wildduck/master/setup/00_install_global_functions_variables.sh
 echo -e "\n-- Continuing with install --"
 source "$INSTALLDIR/00_install_global_functions_variables.sh"
 
@@ -31,7 +33,7 @@ cd /var/opt
 git clone --bare git://github.com/zone-eu/zmta-webadmin.git
 
 # create update hook so we can later deploy to this location
-hook_script_bower zmta-webadmin
+hook_script zmta-webadmin
 chmod +x /var/opt/zmta-webadmin.git/hooks/update
 
 # allow deploy user to restart zone-mta service
@@ -39,8 +41,7 @@ echo "deploy ALL = (root) NOPASSWD: $SYSTEMCTL_PATH restart zmta-webadmin" >> /e
 
 # checkout files from git to working directory
 mkdir -p /opt/zmta-webadmin
-#git --git-dir=/var/opt/zmta-webadmin.git --work-tree=/opt/zmta-webadmin checkout "$WEBMAIL_COMMIT"
-git --git-dir=/var/opt/zmta-webadmin.git --work-tree=/opt/zmta-webadmin checkout
+git --git-dir=/var/opt/zmta-webadmin.git --work-tree=/opt/zmta-webadmin checkout "$WEBADMIN_COMMIT"
 cp /opt/zmta-webadmin/config/default.toml /etc/wildduck/zmta-webadmin.toml
 
 sed -i -e "s/127.0.0.1:27017/10.131.124.127:27017/g;s/secretpass/$ADMINPASS/g" /etc/wildduck/zmta-webadmin.toml
