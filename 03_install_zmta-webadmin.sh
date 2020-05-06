@@ -4,7 +4,7 @@
 OURNAME=03_install_zmta-webadmin.sh
 INSTALLDIR=`pwd`
 PUBLIC_IP=`curl -s https://api.ipify.org`
-WEBADMIN_COMMIT="a69aec12f529d1142f6f4c0a6c2b9f993f9b4a50"
+WEBADMIN_COMMIT="8eb9828f44bb2a74eb9d9204ac492feae69f8ba7"
 
 echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
@@ -25,6 +25,7 @@ then
     $SYSTEMCTL_PATH disable zmta-webadmin || true
     rm -rf /etc/systemd/system/zmta-webadmin.service
 fi
+rm /etc/sudoers.d/zmta-webadmin
 rm -rf /var/opt/zmta-webadmin.git
 rm -rf /opt/zmta-webadmin
 
