@@ -13,8 +13,17 @@ wget -O 00_install_global_functions_variables.sh https://raw.githubusercontent.c
 echo -e "\n-- Continuing with install --"
 source "$INSTALLDIR/00_install_global_functions_variables.sh"
 
+# Ask for domain
+read -s "\nEnter Domain (e.g. grumpyguvner.com): " DOMAIN
+HOSTNAME="dashboard.${DOMAIN}"
+read -p "\nPress Y to continue setting up ${HOSTNAME}, any other key to abort." -n 1 -r
+echo    # (optional) move to a new line
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    exit 1
+fi
 # Ask for admin password
-read -s -p "Enter Admin Password: " ADMINPASS
+read -s -p "\nEnter Admin Password: " ADMINPASS
 
 #### WWW ####
 ####
@@ -53,7 +62,7 @@ chown -R deploy:deploy /var/opt/zmta-webadmin.git
 chown -R deploy:deploy /opt/zmta-webadmin
 
 # install package
-HOME=/home/deploy sudo -u deploy npm install
+npm install --production
 
 
 echo "d /opt/zmta-webadmin 0755 deploy deploy" > /etc/tmpfiles.d/zone-mta.conf
@@ -80,9 +89,16 @@ $SYSTEMCTL_PATH enable zmta-webadmin.service
 echo -e "\n-- Removing Global Functions & Variables Script --"
 rm "$INSTALLDIR/00_install_global_functions_variables.sh"
 
-echo -e "Add following to nginx config file:
-    # ZoneMTA Queue Admin Tool
-    location /queueadmin {
+# Update nginx for new site, make sure ssl is enabled
+echo "server {
+    listen 80;
+    listen [::]:80;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name $HOSTNAME;
+    ssl_certificate /etc/wildduck/certs/fullchain.pem;
+    ssl_certificate_key /etc/wildduck/certs/privkey.pem;
+    location / {
         proxy_http_version 1.1;
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
@@ -91,4 +107,11 @@ echo -e "Add following to nginx config file:
         proxy_pass http://127.0.0.1:8082;
         proxy_redirect off;
     }
-"
+}" > "/etc/nginx/sites-available/$HOSTNAME"
+rm -rf "/etc/nginx/sites-enabled/$HOSTNAME"
+ln -s "/etc/nginx/sites-available/$HOSTNAME" "/etc/nginx/sites-enabled/$HOSTNAME"
+
+service nginx reload
+
+echo -e "\nAfter setting up SSL Certificate & DNS record you can access via  https://${HOSTNAME}"
+echo -e "\n\n Don't forget to delete me rm ${OURNAME}"
