@@ -6,6 +6,9 @@ INSTALLDIR=`pwd`
 PUBLIC_IP=`curl -s https://api.ipify.org`
 WEBADMIN_COMMIT="8eb9828f44bb2a74eb9d9204ac492feae69f8ba7"
 
+NODE_PATH=`command -v node`
+SYSTEMCTL_PATH=`command -v systemctl`
+
 echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
 echo -e "\n-- Fetching Global Functions & Variables Script --"
@@ -14,16 +17,19 @@ echo -e "\n-- Continuing with install --"
 source "$INSTALLDIR/00_install_global_functions_variables.sh"
 
 # Ask for domain
-read -s "\nEnter Domain (e.g. grumpyguvner.com): " DOMAIN
+echo -e "\n\n\n"
+read -p "Enter Domain (e.g. grumpyguvner.com): " DOMAIN
 HOSTNAME="dashboard.${DOMAIN}"
-read -p "\nPress Y to continue setting up ${HOSTNAME}, any other key to abort." -n 1 -r
+echo -e "\n\n"
+read -p "Press Y to continue setting up ${HOSTNAME}, any other key to abort." -n 1 -r
 echo    # (optional) move to a new line
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
     exit 1
 fi
 # Ask for admin password
-read -s -p "\nEnter Admin Password: " ADMINPASS
+echo -e "\n\n"
+read -s -p "Enter Admin Password: " ADMINPASS
 
 #### WWW ####
 ####
