@@ -27,4 +27,4 @@ apt-get -y update && DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt
 apt-get -y autoremove
 
 # Daily reboot
-shutdown -r now
+/sbin/shutdown -r now
