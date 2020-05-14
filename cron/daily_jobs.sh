@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
 ########################################
 ### DAILY JOBS TO RUN ON ALL SERVERS ###
 ########################################
@@ -20,11 +23,15 @@ if [ $? != 0 ]; then
     crontab -u root $CRON_FILE
 fi
 
-# Update all packages
-apt-get -y update && DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+patching(){
+    # Upgrade all packages
+    sudo apt-get update -y;
+    sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y;
+    # Remove unused packages
+    apt-get autoremove =y;
+};
 
-# Remove unused packages
-apt-get -y autoremove
+patching;
 
 # Daily reboot
 /sbin/shutdown -r now
