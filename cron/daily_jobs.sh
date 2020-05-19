@@ -23,6 +23,14 @@ if [ $? != 0 ]; then
     crontab -u root $CRON_FILE
 fi
 
+# If daily reboot doesn't already exist in cron jobs then add it
+grep -qi "shutdown" $CRON_FILE
+if [ $? != 0 ]; then
+    echo "Creating cron job to perform daily reboot"
+    echo "0 3 * * * /sbin/shutdown -r now" >> $CRON_FILE
+    crontab -u root $CRON_FILE
+fi
+
 patching(){
     # Upgrade all packages
     sudo apt-get update -y;
@@ -32,6 +40,3 @@ patching(){
 };
 
 patching;
-
-# Daily reboot
-/sbin/shutdown -r now
